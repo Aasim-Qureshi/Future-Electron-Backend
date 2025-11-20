@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Report {
+  id          Int       @id @default(autoincrement())
+  reportId    String?
+  title       String?
+  submittedAt DateTime?
+  checked     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // relation
+  macros Macro[]
+
+  @@index([submittedAt])
+  @@index([checked])
+}
+
+model Macro {
+  id                              Int       @id @default(autoincrement())
+  macroId                         String?
+  assetType                       String? // asset_type (kept as string to match your data)
+  assetName                       String? // asset_name
+  pgNo                            String? // pg_no
+  model                           String? // model
+  ownerName                       String? // owner_name
+  submitState                     Boolean   @default(false) // submitState
+  yearMade                        String? // year_made
+  finalValue                      String? // final_value (kept string in case of formatted values)
+  assetUsageId                    String? // asset_usage_id
+  valueBase                       String? // value_base
+  inspectionDate                  DateTime? // inspection_date
+  productionCapacity              String? // production_capacity
+  productionCapacityMeasuringUnit String? // production_capacity_measuring_unit
+  productType                     String?
+  marketApproach                  String?
+  marketApproachValue             String?
+  costApproach                    String?
+  costApproachValue               String?
+  country                         String?
+  region                          String?
+  city                            String?
+
+  // flexible column to store any extra fields that don't fit schema
+  extra Json? // use JSONB in Postgres via Prisma Json
+
+  // relation back to report
+  reportId Int
+  report   Report @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([reportId]) // query assets by report
+  @@index([submitState])
+}
