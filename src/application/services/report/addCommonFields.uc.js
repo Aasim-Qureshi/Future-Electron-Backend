@@ -1,6 +1,6 @@
 const Report = require('../../../infrastructure/models/report');
 
-const addCommonFields = async (report_id, region, city, inspection_date) => {
+const addCommonFields = async (report_id, region, city, inspection_date, owner_name) => {
     try {
         // Step 1: Find existing record with report_id
         const existingReport = await Report.findOne({ report_id });
@@ -17,7 +17,8 @@ const addCommonFields = async (report_id, region, city, inspection_date) => {
                 ...asset, // Preserve all existing asset fields
                 region: region || asset.region, // Use provided region or keep existing
                 city: city || asset.city, // Use provided city or keep existing
-                inspection_date: inspection_date || asset.inspection_date // Use provided date or keep existing
+                inspection_date: inspection_date || asset.inspection_date, // Use provided date or keep existing
+                owner_name: owner_name || asset.owner_name // Use provided owner_name or keep existing
             };
         });
 

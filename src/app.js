@@ -12,6 +12,6 @@ app.use(bodyParser());
 
 
 app.use('/api', routes);
-app.get('/health', (req, res) => res.json({ ok: true }));
+app.get('/', (req, res) => res.json({ message: 'Hello World' }));
 
 module.exports = app;

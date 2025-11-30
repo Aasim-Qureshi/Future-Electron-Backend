@@ -40,8 +40,8 @@ const reportController = {
 
     async addCommonFields(req, res) {
         try {
-            const { reportId, region, city, inspectionDate } = req.body;
-            const { success, message, data } = await addCommonFields(reportId, region, city, inspectionDate);
+            const { reportId, region, city, inspectionDate, ownerName } = req.body;
+            const { success, message, data } = await addCommonFields(reportId, region, city, inspectionDate, ownerName);
 
             if (success) {
                 res.status(200).json({ success, message, data });
